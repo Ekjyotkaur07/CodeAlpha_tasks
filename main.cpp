@@ -1,15 +1,22 @@
 #include <iostream>
 #include <vector>
 #include <string>
-using namespace std;
-
-#include <iostream>
-#include <vector>
 #include <fstream>
-#include <string>
 using namespace std;
 
-// Task class to store each task
+// ===== COLOR FUNCTION FOR WINDOWS =====
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
+void setColor(int color) {
+#ifdef _WIN32
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+#endif
+}
+// ===== END COLOR FUNCTION =====
+
+// Task class 
 class Task
 {
 private:
@@ -30,6 +37,8 @@ public:
     bool isCompleted() { return completed; }
     void markComplete() { completed = true; }
 };
+
+//Global variables
 vector<Task> tasks;
 int nextId = 1;
 
@@ -50,7 +59,7 @@ void saveToFile() {
 void loadFromFile() {
     ifstream file("tasks.txt");
     if(!file.is_open()) {
-        return; // No saved file yet
+        return; 
     }
     
     int count;
@@ -82,16 +91,20 @@ int main()
 {
     int choice;
     string taskTitle;
+    //Load saved tasks
     loadFromFile();
 
     do
     {
+        // ===== ADD COLOR TO MENU =====
+        setColor(3); //Cyan color
         cout << "\n=== TO-DO LIST MENU ===" << endl;
+        setColor(7); //Reset to white
         cout << "1. Add Task" << endl;
         cout << "2. View Tasks" << endl;
         cout << "3. Mark Task Complete" << endl; 
         cout << "4. Delete Task" << endl;               
-        cout << "4. Exit" << endl;               
+        cout << "5. Exit" << endl;               
         cout << "Enter choice: ";
         cin >> choice;
 
@@ -101,35 +114,46 @@ int main()
             cin.ignore();
             getline(cin, taskTitle);
             tasks.push_back(Task(nextId++, taskTitle));
+            setColor(2);
             cout << "Task added successfully!" << endl;
+            setColor(7);
         }
-        else if (choice == 2)
-        {
+        else if(choice == 2) {
+            setColor(3);  // Cyan
             cout << "\n=== YOUR TASKS ===" << endl;
-            for (int i = 0; i < tasks.size(); i++)
-            {
+            setColor(7);  // Reset
+            
+            for(int i = 0; i < tasks.size(); i++) {
+                if(tasks[i].isCompleted()) {
+                    setColor(2);  // Green for completed
+                } else {
+                    setColor(4);  // Red for pending
+                }
+                
                 cout << tasks[i].getId() << ". " << tasks[i].getTitle();
-                if (tasks[i].isCompleted())
-                {
+                if(tasks[i].isCompleted()) {
                     cout << " [COMPLETED]";
                 }
                 cout << endl;
+                setColor(7);  // Reset
             }
         }
         else if(choice == 3) {
             int id;
-            cout << "Enter task ID to mark complete: ";
+            cout << "Enter task ID to mark as complete: ";
             cin >> id;
             
             for(int i = 0; i < tasks.size(); i++) {
                 if(tasks[i].getId() == id) {
                     tasks[i].markComplete();
-                    cout << "Task marked as completed!" << endl;
+                    setColor(2);  // Green
+                    cout << "Task #" << id << " marked as completed!" << endl;
+                    setColor(7);  // Reset
                     break;
                 }
             }
         }
-        else if(choice == 4) {
+       else if(choice == 4) {
             int id;
             cout << "Enter task ID to delete: ";
             cin >> id;
@@ -137,7 +161,9 @@ int main()
             for(int i = 0; i < tasks.size(); i++) {
                 if(tasks[i].getId() == id) {
                     tasks.erase(tasks.begin() + i);
-                    cout << "Task deleted!" << endl;
+                    setColor(2);  // Green
+                    cout << "Task deleted successfully!" << endl;
+                    setColor(7);  // Reset
                     break;
                 }
             }
@@ -146,6 +172,7 @@ int main()
     } while (choice != 5);
 
     saveToFile();
+    setColor(3);
     cout << "Tasks saved to file!" << endl;
     return 0;
 }
