@@ -1,0 +1,15 @@
+# Create .gitignore file
+echo "*.exe" > .gitignore
+echo "*.o" >> .gitignore
+echo "*.out" >> .gitignore
+echo "tasks.txt" >> .gitignore
+echo ".DS_Store" >> .gitignore
+
+# Add to git
+git add .gitignore
+
+# Commit
+git commit -m "chore: add .gitignore to exclude binaries and save files"
+
+# Push
+git push
