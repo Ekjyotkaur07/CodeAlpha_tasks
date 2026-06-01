@@ -27,8 +27,11 @@ public:
     bool isCompleted() { return completed; }
     void markComplete() { completed = true; }
 };
+vector<Task> tasks;
+int nextId = 1;
 int main() {
     int choice;
+    string taskTitle;
     
     do {
         cout << "\n=== TO-DO LIST MENU ===" << endl;
@@ -39,10 +42,21 @@ int main() {
         cin >> choice;
         
         if(choice == 1) {
-            cout << "Add task feature coming soon!" << endl;
+            cout << "Enter task title: ";
+            cin.ignore();
+            getline(cin, taskTitle);
+            tasks.push_back(Task(nextId++, taskTitle));
+            cout << "Task added successfully!" << endl;
         }
         else if(choice == 2) {
-            cout << "View tasks feature coming soon!" << endl;
+            cout << "\n=== YOUR TASKS ===" << endl;
+            for(int i = 0; i < tasks.size(); i++) {
+                cout << tasks[i].getId() << ". " << tasks[i].getTitle();
+                if(tasks[i].isCompleted()) {
+                    cout << " [COMPLETED]";
+                }
+                cout << endl;
+            }
         }
         
     } while(choice != 3);
