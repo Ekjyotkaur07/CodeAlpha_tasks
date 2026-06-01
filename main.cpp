@@ -9,19 +9,21 @@ using namespace std;
 using namespace std;
 
 // Task class to store each task
-class Task {
+class Task
+{
 private:
     int id;
     string title;
     bool completed;
-    
+
 public:
-    Task(int i, string t) {
+    Task(int i, string t)
+    {
         id = i;
         title = t;
         completed = false;
     }
-    
+
     int getId() { return id; }
     string getTitle() { return title; }
     bool isCompleted() { return completed; }
@@ -29,37 +31,57 @@ public:
 };
 vector<Task> tasks;
 int nextId = 1;
-int main() {
+int main()
+{
     int choice;
     string taskTitle;
-    
-    do {
+
+    do
+    {
         cout << "\n=== TO-DO LIST MENU ===" << endl;
         cout << "1. Add Task" << endl;
         cout << "2. View Tasks" << endl;
-        cout << "3. Exit" << endl;
+        cout << "3. Mark Task Complete" << endl; // NEW OPTION
+        cout << "4. Exit" << endl;               // Changed from 3 to 4
         cout << "Enter choice: ";
         cin >> choice;
-        
-        if(choice == 1) {
+
+        if (choice == 1)
+        {
             cout << "Enter task title: ";
             cin.ignore();
             getline(cin, taskTitle);
             tasks.push_back(Task(nextId++, taskTitle));
             cout << "Task added successfully!" << endl;
         }
-        else if(choice == 2) {
+        else if (choice == 2)
+        {
             cout << "\n=== YOUR TASKS ===" << endl;
-            for(int i = 0; i < tasks.size(); i++) {
+            for (int i = 0; i < tasks.size(); i++)
+            {
                 cout << tasks[i].getId() << ". " << tasks[i].getTitle();
-                if(tasks[i].isCompleted()) {
+                if (tasks[i].isCompleted())
+                {
                     cout << " [COMPLETED]";
                 }
                 cout << endl;
             }
         }
-        
-    } while(choice != 3);
-    
+        else if(choice == 3) {
+            int id;
+            cout << "Enter task ID to mark complete: ";
+            cin >> id;
+            
+            for(int i = 0; i < tasks.size(); i++) {
+                if(tasks[i].getId() == id) {
+                    tasks[i].markComplete();
+                    cout << "Task marked as completed!" << endl;
+                    break;
+                }
+            }
+        }
+
+    } while (choice != 3);
+
     return 0;
 }
