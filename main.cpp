@@ -89,8 +89,9 @@ int main()
         cout << "\n=== TO-DO LIST MENU ===" << endl;
         cout << "1. Add Task" << endl;
         cout << "2. View Tasks" << endl;
-        cout << "3. Mark Task Complete" << endl; // NEW OPTION
-        cout << "4. Exit" << endl;               // Changed from 3 to 4
+        cout << "3. Mark Task Complete" << endl; 
+        cout << "4. Delete Task" << endl;               
+        cout << "4. Exit" << endl;               
         cout << "Enter choice: ";
         cin >> choice;
 
@@ -128,8 +129,21 @@ int main()
                 }
             }
         }
+        else if(choice == 4) {
+            int id;
+            cout << "Enter task ID to delete: ";
+            cin >> id;
+            
+            for(int i = 0; i < tasks.size(); i++) {
+                if(tasks[i].getId() == id) {
+                    tasks.erase(tasks.begin() + i);
+                    cout << "Task deleted!" << endl;
+                    break;
+                }
+            }
+        }
 
-    } while (choice != 3);
+    } while (choice != 5);
 
     saveToFile();
     cout << "Tasks saved to file!" << endl;
