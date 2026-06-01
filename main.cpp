@@ -5,6 +5,7 @@ using namespace std;
 
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include <string>
 using namespace std;
 
@@ -31,6 +32,20 @@ public:
 };
 vector<Task> tasks;
 int nextId = 1;
+
+// Save tasks to file
+void saveToFile() {
+    ofstream file("tasks.txt");
+    file << tasks.size() << endl;
+    
+    for(int i = 0; i < tasks.size(); i++) {
+        file << tasks[i].getId() << endl;
+        file << tasks[i].getTitle() << endl;
+        file << tasks[i].isCompleted() << endl;
+    }
+    file.close();
+}
+
 int main()
 {
     int choice;
@@ -83,5 +98,7 @@ int main()
 
     } while (choice != 3);
 
+    saveToFile();
+    cout << "Tasks saved to file!" << endl;
     return 0;
 }
