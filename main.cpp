@@ -46,10 +46,43 @@ void saveToFile() {
     file.close();
 }
 
+// Load tasks from file
+void loadFromFile() {
+    ifstream file("tasks.txt");
+    if(!file.is_open()) {
+        return; // No saved file yet
+    }
+    
+    int count;
+    file >> count;
+    
+    for(int i = 0; i < count; i++) {
+        int id;
+        string title;
+        bool completed;
+        
+        file >> id;
+        file.ignore();
+        getline(file, title);
+        file >> completed;
+        
+        Task task(id, title);
+        if(completed) {
+            task.markComplete();
+        }
+        tasks.push_back(task);
+        if(id >= nextId) {
+            nextId = id + 1;
+        }
+    }
+    file.close();
+}
+
 int main()
 {
     int choice;
     string taskTitle;
+    loadFromFile();
 
     do
     {
